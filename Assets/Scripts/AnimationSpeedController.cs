@@ -8,6 +8,9 @@ public class AnimationSpeedController : MonoBehaviour
     public float fastSpeed = 2f;
     public float slowSpeed = 0.5f;
     public float slowDownRate = 0.1f;
+    public float speedIncrement = 0.1f;
+    public float speedDecrement = 0.2f;
+    public float maxSpeed = 3f;
 
     private float targetSpeed;
 
@@ -26,17 +29,20 @@ public class AnimationSpeedController : MonoBehaviour
         // On touch or click
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUIObject())
         {
-            targetSpeed = fastSpeed;
+            // Increase speed on each click, up to the maximum speed
+            targetSpeed = Mathf.Min(targetSpeed + speedIncrement, maxSpeed);
         }
 
-        // Gradually slow down animation
-        float currentSpeed = Mathf.Lerp(animator.speed, targetSpeed, slowDownRate);
-        animator.speed = currentSpeed;
-
-        if (Mathf.Approximately(animator.speed, slowSpeed))
+        // If current speed is greater than slowSpeed, gradually slow down animation
+        if (targetSpeed > slowSpeed)
         {
-            targetSpeed = slowSpeed;
+            targetSpeed = Mathf.Max(targetSpeed - speedDecrement * Time.deltaTime, slowSpeed);
+            float currentSpeed = Mathf.Lerp(animator.speed, targetSpeed, slowDownRate);
+            animator.speed = currentSpeed;
+            Debug.Log("currentSpeed:" + currentSpeed);
         }
+
+        Debug.Log("targetSpeed:" + targetSpeed);
     }
 
     private bool IsPointerOverUIObject()
