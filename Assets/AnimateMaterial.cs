@@ -22,12 +22,12 @@ public class AnimateMaterial : MonoBehaviour
         currentOffset -= Time.deltaTime * speed;
 
         // Reset the offset if it's less than -0.4
-        if (currentOffset < -0.4f)
+        if (currentOffset > 0.6f)
         {
-            currentOffset = 0.6f;
+            currentOffset = -0.4f;
         }
 
         // Apply the offset to the material's main texture
-        material.SetTextureOffset("_MainTex", new Vector2(currentOffset, 0));
+        material.SetTextureOffset("_MainTex", new Vector2(0,currentOffset));
     }
 }
