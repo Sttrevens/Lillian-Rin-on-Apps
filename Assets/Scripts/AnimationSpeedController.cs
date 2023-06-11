@@ -14,6 +14,12 @@ public class AnimationSpeedController : MonoBehaviour
 
     private float targetSpeed;
 
+    [SerializeField]
+    private List<GameObject> objectsToActivate;
+
+    [SerializeField]
+    private float activationSpeedThreshold = 2.5f;
+
     void Start()
     {
         if (animator == null)
@@ -43,6 +49,17 @@ public class AnimationSpeedController : MonoBehaviour
         }
 
         Debug.Log("targetSpeed:" + targetSpeed);
+
+        if (targetSpeed >= activationSpeedThreshold)
+        {
+            foreach (GameObject obj in objectsToActivate)
+            {
+                if (!obj.activeSelf)
+                {
+                    obj.SetActive(true);
+                }
+            }
+        }
     }
 
     private bool IsPointerOverUIObject()
